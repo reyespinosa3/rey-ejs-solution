@@ -8,7 +8,7 @@ const session    =  require('express-session');
 
 
 const User       = require('./models/user');
-const Video      = require('./models/video');
+
 
 mongoose.connect('mongodb://127.0.0.1:27017/video');
 if (process.env.NODE_ENV == "production") {
@@ -20,6 +20,11 @@ if (process.env.NODE_ENV == "production") {
 
 const app = express();
 const saltRounds = 10;
+
+const router = express.Router();
+const videos = require('./routes/videos');
+app.use('/videos', videos);
+
 
 app.use(morgan('tiny'));
 app.use(express.static('public'));
@@ -90,19 +95,21 @@ app.get("/protected", (req, res) => {
 	}
 });
 
-app.get("/videos", (req, res) => {
-	Video.find(function(err, videos) {
-      res.render('videos/index', {videos: videos });
-    });
+// update tweet by specific user
+app.put('/users/:id/tweets/:tweet_id', (req, res) => {
+  let newTweetData = req.body;
+  Tweet.findByIdAndUpdate(req.params.tweet_id, newUserData, null, () {
+    res.redirect('/users/' + req.params.id + '/tweets' + 'req.params.tweet_id');
+  })
 })
 
-app.get("/videos/:id", (req, res) => {
-	let id = req.params.id;
-
-	Video.findOne({id: id}, function(err, video) {
-      res.render('videos/show', {video: video });
-    });
+// delete tweet by id
+app.delete('/users/:id/tweets/:tweet_id', function(req, res) {
+  Tweet.findByIdAndRemove(req.params.tweet_id);
+  res.send('Your tweet ' + req.params.tweet_id + " has been removed");
 })
+
+
 
 app.get("/helloworld", (req, res) => {
 	let data = {
