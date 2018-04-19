@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<h1><%= message %></h1>
+
+	<h2><%= documentTitle %></h2>
+	<p><%= subTitle %></p>
+
+
+	<% if (currentUser) { %>
+	  <div class='more'>
+	    <p>Comedy Videos NOW is a compilation of favorite comedy videos of the students of WDI-WC-Mar2018. Its super cool and great.
+	    </p>
+	  </div>
+	<% }  %>
+
+	<% for (let i = 0; i < comedians.length; i++) { %>
+	  <p>Great comedian: <%= comedians[i] %> </p>
+	<% } %>
+
+</body>
+</html>
